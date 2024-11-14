@@ -20,6 +20,7 @@ module Network.SimpleIRC.Sasl
   ) where
 
 import Data.List.NonEmpty (NonEmpty(..))
+import qualified Data.Base64.Types as B64
 import qualified Data.ByteString.Base64 as B64
 import qualified Data.ByteString.Char8 as B
 import qualified Data.List.NonEmpty as NE
@@ -64,7 +65,7 @@ splitMessage bs = case B.length bs of
     (x, y) = B.splitAt 400 bs
 
 encodeAuthMsg :: B.ByteString -> NonEmpty B.ByteString
-encodeAuthMsg = splitMessage . B64.encodeBase64'
+encodeAuthMsg = splitMessage . B64.extractBase64 . B64.encodeBase64'
 
 -- | ignores needed padding in base64
 decodeAuthMsg
